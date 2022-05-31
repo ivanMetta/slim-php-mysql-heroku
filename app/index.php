@@ -13,7 +13,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 require_once './db/AccesoDatos.php';
 require_once './middlewares/AutentificadorJWT.php';
-
+require_once './middlewares/Logger.php';
 require_once './controllers/UsuarioController.php';
 
 // Load ENV
@@ -31,8 +31,9 @@ $app->addErrorMiddleware(true, true, true);
 $app->group('/usuarios', function (RouteCollectorProxy $group) {
   $group->get('[/]', \UsuarioController::class . ':TraerTodos');
   $group->get('/{usuario}', \UsuarioController::class . ':TraerUno');
-  $group->post('[/]', \UsuarioController::class . ':CargarUno');
-});
+  $group->post('[/]', \UsuarioController::class . ':CargarUnoBis');
+})->add(\Logger::class . ":VerificarCredenciales");
+
 
 // JWT test routes
 $app->group('/jwt', function (RouteCollectorProxy $group) {
